@@ -1,0 +1,27 @@
+sharding:
+  jdbc:
+    datasource:
+      ds_EU:
+        driver-class-name: com.mysql.jdbc.Driver
+        username: root
+        password: 
+        type: org.apache.commons.dbcp.BasicDataSource
+        url: jdbc:mysql://localhost:3306/user_eu?useSSL=false&characterEncoding=utf-8
+      ds_US:
+        driver-class-name: com.mysql.jdbc.Driver
+        username: root
+        password: 
+        type: org.apache.commons.dbcp.BasicDataSource
+        url: jdbc:mysql://localhost:3306/user_us?useSSL=false&characterEncoding=utf-8
+      names: ds_US,ds_EU
+    config:
+      sharding:
+        default-database-strategy:
+          standard:
+            precise-algorithm-class-name: com.sample.sharding.algorithm.PreciseModuloDatabaseShardingAlgorithm
+            sharding-column: country_code
+        tables:
+          user:
+            actual-data-nodes: ds_US.user,ds_EU.user
+            key-generator-column-name: id
+            key-generator-class: io.shardingjdbc.core.keygen.DefaultKeyGenerator  
